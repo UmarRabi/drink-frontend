@@ -28,7 +28,7 @@ export default function ProductForm() {
         reset,
         formState: { errors, isSubmitting },
     } = useForm<FormData>({ resolver: zodResolver(schema) });
-    const { data: brands = [], isLoading } = useQuery({
+    const { data: brands = [], } = useQuery({
         queryKey: ['brands'],
         queryFn: getAllBrands,
     });

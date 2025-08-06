@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+// import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { addProductHistory } from '../../api/product';
 
