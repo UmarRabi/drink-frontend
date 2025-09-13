@@ -15,12 +15,13 @@ export const router = createBrowserRouter([
         path: '/',
         element: <MainLayout />,
         children: [
+            { path: '/', element: <ProductTable /> },
             { path: '/products', element: <ProductTable /> },
             { path: '/store/new', element: <StoreForm /> },
             { path: '/products/new', element: <ProductForm /> },
             { path: '/products/:productId/history', element: <ProductHistoryForm /> },
             { path: '/products/:productId/sales', element: <ProductSaleForm /> },
-            { path: '/sale/:saleId', element: <ProductSaleView /> },
+            { path: '/products/:productId', element: <ProductSaleView /> },
             { path: '/brands/new', element: <BrandForm /> },
             // additional routes can go here
         ],

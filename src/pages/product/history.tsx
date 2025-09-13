@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 // import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { addProductHistory } from '../../api/product';
 
 const schema = z.object({
@@ -17,6 +17,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function ProductHistoryForm() {
+     const navigate = useNavigate()
   const { productId } = useParams();
 
   const {
@@ -38,6 +39,7 @@ export default function ProductHistoryForm() {
      mutationFn: (data: FormData) => addProductHistory(productId!, data),
     onSuccess: () => {
       toast.success('Product history added');
+      navigate('/')
       reset({ product_id: productId ?? '', title: '', description: '', updated_by: '' });
     },
     onError: () => {

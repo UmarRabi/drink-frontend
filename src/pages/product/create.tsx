@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { createProduct } from '../../api/product';
 import { getAllBrands } from '../../api/brand';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
     brandId: z.string().uuid('Must be a valid UUID'),
@@ -22,6 +23,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function ProductForm() {
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,

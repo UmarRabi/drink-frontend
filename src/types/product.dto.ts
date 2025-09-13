@@ -134,4 +134,66 @@ export interface ProductSaleDetail {
   };
 }
 
+export interface ProductView {
+  id: string;
+  brandId: string;
+  name: string;
+  description: string;
+  volume_ml: number;
+  qrcode_url: string;
+  production_date: string; // ISO string
+  expiration_date: string; // ISO string
+  createdAt: string;
+  updatedAt: string;
+
+  sales: {
+    id: string;
+    productId: string;
+    description: string | null;
+    storeId: string;
+    predecessorStoreId: string;
+    quantity: number;
+    costPrice: number;
+    saleDate: string; // ISO string
+    predecessorStore: {
+      id: string;
+      name: string;
+      address: string;
+      phone: string;
+      email: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+    store: {
+      id: string;
+      name: string;
+      address: string;
+      phone: string;
+      email: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  }[];
+
+  histories: {
+    id: string;
+    productId: string;
+    title: string;
+    description: string;
+    updatedBy: string | null;
+    updatedAt: string; // ISO string
+  }[];
+
+  brand: {
+    id: string;
+    name: string;
+    description: string;
+    website: string;
+    logoUrl: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+
 

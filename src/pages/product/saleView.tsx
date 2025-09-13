@@ -1,178 +1,169 @@
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { QRCodeSVG } from 'qrcode.react';
-import { recordSale } from '../../api/product';
-import type { ProductSaleDetail } from '../../types/product.dto';
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { QRCodeSVG } from "qrcode.react";
+import { recordSale } from "../../api/product";
+import type { ProductView } from "../../types/product.dto";
 
 export default function ProductSaleView() {
-    const { saleId } = useParams<{ saleId: string }>();
-    const pageUrl = window.location.href;
+  const { productId } = useParams<{ productId: string }>();
+  const pageUrl = window.location.href;
 
-    const { data, isLoading } = useQuery<ProductSaleDetail>({
-        queryKey: ['sale', saleId],
-        queryFn: () => recordSale(saleId!),
-        enabled: !!saleId,
+  const { data, isLoading } = useQuery<ProductView>({
+    queryKey: ["sale", productId],
+    queryFn: () => recordSale(productId!),
+    enabled: !!productId,
+  });
+
+  if (isLoading || !data)
+    return <p className="text-center py-10">Loading...</p>;
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
 
-    if (isLoading || !data) return <p className="text-center py-10">Loading...</p>;
-
-    return (
-        // <div className="text-gray-700 max-w-4xl p-6">
-        //     <h1 className="text-2xl font-semibold mb-6 text-blue-700">Product Sale Details</h1>
-
-        //     <div className="grid grid-cols-2 gap-4 bg-white p-6 rounded-lg shadow">
-        //         <div>
-        //             <h2 className="text-lg font-medium mb-2">Product Info</h2>
-        //             <p className="flex justify-between gap-4">
-        //                 <span className="font-medium">Name:</span>
-        //                 <span>{data.product.name}</span>
-        //             </p>
-        //             <p className="flex justify-between gap-4">
-        //                 <span className="font-medium">Brand:</span>
-        //                 <span>{data.product.brand.name}</span>
-        //             </p>
-        //             <p className="flex justify-between gap-4">
-        //                 <span className="font-medium">Description:</span>
-        //                 <span>{data.product.description}</span>
-        //             </p>
-        //             <p className="flex justify-between gap-4">
-        //                 <span className="font-medium">Volume:</span>
-        //                 <span>{data.product.volume_ml} ml</span>
-        //             </p>
-        //         </div>
-
-
-        //         <div>
-        //             <h2 className="text-lg font-medium text-gray-700">Sale Info</h2>
-        //             <p><strong>Quantity:</strong> {data.quantity}</p>
-        //             <p><strong>Cost Price:</strong> ₦{data.costPrice}</p>
-        //             <p><strong>Sold At:</strong> {new Date(data.saleDate).toLocaleString()}</p>
-        //         </div>
-
-        //         <div>
-        //             <h2 className="text-lg font-medium text-gray-700">Store Info</h2>
-        //             <p><strong>Name:</strong> {data.store.name}</p>
-        //             <p><strong>Phone:</strong> {data.store.phone}</p>
-        //             <p><strong>Email:</strong> {data.store.email}</p>
-        //         </div>
-
-        //         {data.predecessorStore && (
-        //             <div>
-        //                 <h2 className="text-lg font-medium text-gray-700">Previous Store</h2>
-        //                 <p><strong>Name:</strong> {data.predecessorStore.name}</p>
-        //                 <p><strong>Phone:</strong> {data.predecessorStore.phone}</p>
-        //             </div>
-        //         )}
-
-        //         <div className="col-span-2 mt-6">
-        //             <h2 className="text-lg font-medium text-gray-700 mb-2">Product History</h2>
-        //             {data.product.histories.map((history) => (
-        //                 <div key={history.id} className="border border-gray-300 p-3 mb-2 rounded">
-        //                     <p><strong>{history.title}</strong></p>
-        //                     <p>{history.description}</p>
-        //                     <p className="text-sm text-gray-500">Updated: {new Date(history.updatedAt).toLocaleString()}</p>
-        //                 </div>
-        //             ))}
-        //         </div>
-
-        //         <div className="col-span-2 flex flex-col items-center mt-6">
-        //             <h2 className="text-lg font-medium text-gray-700 mb-2">QR Code (Link to this page)</h2>
-        //             <QRCodeSVG value={pageUrl} size={150} />
-        //         </div>
-        //     </div>
-        // </div>
-        <div className="grid grid-cols-2 gap-4 mx-32 px-8 bg-white p-6 rounded-lg shadow text-sm text-gray-800">
-            {/* Product Info */}
-            <div>
-                <h2 className="text-lg font-medium mb-3 text-gray-700">Product Info</h2>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Name:</span>
-                    <span>{data.product.name}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Brand:</span>
-                    <span>{data.product.brand.name}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Description:</span>
-                    <span>{data.product.description}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Volume:</span>
-                    <span>{data.product.volume_ml} ml</span>
-                </p>
-            </div>
-
-            {/* Sale Info */}
-            <div>
-                <h2 className="text-lg font-medium mb-3 text-gray-700">Sale Info</h2>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Quantity:</span>
-                    <span>{data.quantity}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Cost Price:</span>
-                    <span>₦{data.costPrice}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Sold At:</span>
-                    <span>{new Date(data.saleDate).toLocaleString()}</span>
-                </p>
-            </div>
-
-            {/* Store Info */}
-            <div>
-                <h2 className="text-lg font-medium mb-3 text-gray-700">Store Info</h2>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Name:</span>
-                    <span>{data.store.name}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Phone:</span>
-                    <span>{data.store.phone}</span>
-                </p>
-                <p className="flex justify-between gap-4">
-                    <span className="font-medium">Email:</span>
-                    <span>{data.store.email}</span>
-                </p>
-            </div>
-
-            {/* Previous Store Info (optional) */}
-            {data.predecessorStore && (
-                <div>
-                    <h2 className="text-lg font-medium mb-3 text-gray-700">Previous Store</h2>
-                    <p className="flex justify-between gap-4">
-                        <span className="font-medium">Name:</span>
-                        <span>{data.predecessorStore.name}</span>
-                    </p>
-                    <p className="flex justify-between gap-4">
-                        <span className="font-medium">Phone:</span>
-                        <span>{data.predecessorStore.phone}</span>
-                    </p>
-                </div>
-            )}
-
-            {/* Product History */}
-            <div className="col-span-2 mt-6">
-                <h2 className="text-lg font-medium text-gray-700 mb-2">Product History</h2>
-                {data.product.histories.map((history) => (
-                    <div key={history.id} className="border border-gray-300 p-3 mb-2 rounded">
-                        <p className="font-medium">{history.title}</p>
-                        <p>{history.description}</p>
-                        <p className="text-sm text-gray-500">
-                            Updated: {new Date(history.updatedAt).toLocaleString()}
-                        </p>
-                    </div>
-                ))}
-            </div>
-
-            {/* QR Code */}
-            <div className="col-span-2 mt-6">
-                <h2 className="text-lg font-medium text-gray-700 mb-2">QR Code (Link to this page)</h2>
-                <div className="flex justify-start">
-                    <QRCodeSVG value={pageUrl} size={150} />
-                </div>
-            </div>
+  return (
+    <div className="max-w-5xl mx-auto p-6 text-gray-800">
+      {/* Header */}
+      <div className="grid grid-cols-3 items-center mb-6">
+        {/* Product Image */}
+        <div className="flex justify-start">
+          {data && (
+            <img
+              src={""}
+              alt={data.qrcode_url}
+              className="w-24 h-24 object-cover rounded-lg shadow"
+            />
+          )}
         </div>
-    );
+
+        {/* Product Name */}
+        <div className="text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900">
+            {data.name}
+          </h1>
+        </div>
+
+        {/* QR Code */}
+        <div className="flex justify-end">
+          <QRCodeSVG value={pageUrl} size={120} />
+        </div>
+      </div>
+
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Product Info */}
+        <div className="p-6 bg-white shadow rounded-2xl">
+          <h2 className="text-xl font-semibold mb-4">Product Details</h2>
+          <p>
+            <span className="font-semibold">Name:</span> {data.name}
+          </p>
+          <p>
+            <span className="font-semibold">Brand:</span> {data.brand.name}
+          </p>
+          {data.brand.website && (
+            <a
+              href={data.brand.website}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-500 text-sm underline"
+            >
+              Visit Brand Website
+            </a>
+          )}
+          <p className="mt-2">
+            <span className="font-semibold">Volume:</span> {data.volume_ml}ml
+          </p>
+          <p>
+            <span className="font-semibold">Production Date:</span>{" "}
+            {formatDate(data.production_date)}
+          </p>
+          <p>
+            <span className="font-semibold">Expiry Date:</span>{" "}
+            {formatDate(data.expiration_date)}
+          </p>
+
+          {/* Expandable Description */}
+          {data.description && (
+            <details className="mt-4">
+              <summary className="cursor-pointer text-blue-600">
+                Read Description
+              </summary>
+              <p className="mt-2 text-sm text-gray-700 whitespace-pre-line">
+                {data.description}
+              </p>
+            </details>
+          )}
+        </div>
+
+        {/* Sale & Store Info */}
+        <div className="p-6 bg-white shadow rounded-2xl">
+          <h2 className="text-xl font-semibold mb-4">Sales & Store Details</h2>
+
+          {data.sales.length === 0 ? (
+            <p className="text-gray-500">No sales recorded.</p>
+          ) : (
+            data.sales.map((sale) => (
+              <div
+                key={sale.id}
+                className="mb-6 border-b pb-4 last:border-b-0 last:pb-0"
+              >
+                <p>
+                  <span className="font-semibold">Sale Date:</span>{" "}
+                  {new Date(sale.saleDate).toLocaleString()}
+                </p>
+                <p>
+                  <span className="font-semibold">Quantity:</span>{" "}
+                  {sale.quantity}
+                </p>
+                <p>
+                  <span className="font-semibold">Cost Price:</span> ₦
+                  {sale.costPrice.toLocaleString()}
+                </p>
+
+                <div className="mt-4">
+                  <h3 className="font-semibold text-lg mb-2">Store Info</h3>
+                  <p>{sale.store.name}</p>
+                  <p className="text-sm">{sale.store.address}</p>
+                  <p className="text-sm">📞 {sale.store.phone}</p>
+                  <p className="text-sm">✉️ {sale.store.email}</p>
+                </div>
+
+                {sale.predecessorStore && (
+                  <div className="mt-4">
+                    <h3 className="font-semibold text-lg mb-2">
+                      Previous Store
+                    </h3>
+                    <p>{sale.predecessorStore.name}</p>
+                    <p className="text-sm">📞 {sale.predecessorStore.phone}</p>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Product History */}
+      {data.histories?.length > 0 && (
+        <div className="mt-6 p-6 bg-white shadow rounded-2xl">
+          <h2 className="text-xl font-semibold mb-4">Product History</h2>
+          {data.histories.map((history) => (
+            <div
+              key={history.id}
+              className="border border-gray-300 p-3 mb-2 rounded"
+            >
+              <p className="font-medium">{history.title}</p>
+              <p>{history.description}</p>
+              <p className="text-sm text-gray-500">
+                Updated: {new Date(history.updatedAt).toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

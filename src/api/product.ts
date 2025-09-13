@@ -6,7 +6,7 @@ import type {
     ProductHistory, 
     CreateProductSaleDto, 
     ProductSale, 
-    ProductSaleDetail
+    ProductView
 } from "../types/product.dto";
 
 
@@ -42,7 +42,7 @@ export const recordProductSale = async (
 };
 export const recordSale = async (
   saleId: string,
-): Promise<ProductSaleDetail> => {
+): Promise<ProductView> => {
   const res = await api.get(`/products/sale/${saleId}`);
   return res.data;
 };
