@@ -38,6 +38,7 @@ export default function ProductForm() {
         mutationFn: createProduct,
         onSuccess: () => {
             toast.success('Product created successfully');
+            navigate('/')
             reset();
         },
         onError: () => toast.error('Failed to create product'),

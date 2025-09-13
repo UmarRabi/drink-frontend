@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { getAllProducts } from "../../api/product";
 import type { Product } from "../../types/product.dto";
-import { useState } from "react";
+// import { useState } from "react";
 import { FiEye, FiClock, FiShoppingCart } from "react-icons/fi";
 
 export default function ProductTable() {
@@ -15,11 +15,11 @@ export default function ProductTable() {
     queryFn: getAllProducts,
   });
 
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+//   const [setOpenDropdown] = useState<string | null>(null);
 
-  const toggleDropdown = (id: string) => {
-    setOpenDropdown((prev) => (prev === id ? null : id));
-  };
+//   const toggleDropdown = (id: string) => {
+//     setOpenDropdown((prev) => (prev === id ? null : id));
+//   };
 
   if (isLoading)
     return <p className="text-center py-10">Loading products...</p>;
